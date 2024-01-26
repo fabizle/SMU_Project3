@@ -7,12 +7,12 @@ class SQLHelper():
     def __init__(self):
         self.engine = create_engine("sqlite:///Resources/tornados.sqlite")
 
-    def getMapData(self, state):
+    def getMapData(self, st):
         # allow the user to select ALL or a specific state
-        if state == "All":
+        if st == "All":
             where_clause = "1=1"
         else:
-            where_clause = f"state = '{state}'"
+            where_clause = f"st = '{st}'"
 
         # USE RAW SQL
         query = f"""
@@ -23,18 +23,19 @@ class SQLHelper():
                 WHERE
                     {where_clause};
         """
-
+        # print(query)
         df_map = pd.read_sql(text(query), con=self.engine)
         data_map = df_map.to_dict(orient="records")
 
         return(data_map)
+        # print(data_map)
 
-    def getBarData(self, state):
+    def getBarData(self, st):
         # allow the user to select ALL or a specific state
-        if state == "All":
+        if st == "All":
             where_clause = "1=1"
         else:
-            where_clause = f"state = '{state}'"
+            where_clause = f"st = '{st}'"
 
         query = f"""
             SELECT
@@ -46,8 +47,7 @@ class SQLHelper():
             WHERE
                 {where_clause}
             GROUP BY
-                location,
-                state
+                st
             ORDER BY
                 num_tornados desc;
         """
@@ -57,12 +57,12 @@ class SQLHelper():
 
         return(data_bar)
 
-    def getLineData(self, state):
+    def getLineData(self, st):
         # allow the user to select ALL or a specific state
-        if state == "All":
+        if st == "All":
             where_clause = "1=1"
         else:
-            where_clause = f"state = '{state}'"
+            where_clause = f"st = '{st}'"
 
         query = f"""
             SELECT
@@ -75,13 +75,14 @@ class SQLHelper():
             WHERE
                 {where_clause}
             GROUP BY
-                state,
+                st,
                 magnitude
             ORDER BY
-                state asc;
+                st asc;
         """
 
         df_line = pd.read_sql(text(query), con=self.engine)
         data_line = df_line.to_dict(orient="records")
 
-        return(data_line)
+        # return(data_line)
+        print(data_line)

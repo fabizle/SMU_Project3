@@ -60,12 +60,12 @@ function makeMap(data) {
     let row = data.map_data[i];
 
     // Get Lat/Long
-    let latitude = row.latitude;
-    let longitude = row.longitude;
+    let latitude = row.slat;
+    let longitude = row.slon;
     let location = [latitude, longitude];
 
     // Add a new marker to the cluster group, and bind a popup.
-    let marker = L.marker(location).bindPopup(`<h3>${row.address}</h3>`);
+    let marker = L.marker(location).bindPopup(`<h3>${row.st}</h3>`);
     markerLayer.addLayer(marker);
 
     // for the heatmap
@@ -106,8 +106,8 @@ function makeBar(data) {
 
   // Trace for the Data
   let trace = {
-    x: data.bar_data.map(row => row.num_tornados).reverse(),
-    y: data.bar_data.map(row => row.loc_display).reverse(),
+    x: data.bar_data.map(row => row.st).reverse(),
+    y: data.bar_data.map(row => row.num_tornados).reverse(),
     type: "bar",
     orientation: "h"
   }
@@ -130,9 +130,9 @@ doWork();
 
 function makeLine(data) {
     let trace = {
-        x: data.line_data.map(row => row.state),
+        x: data.line_data.map(row => row.st),
         y: data.line_data.map(row=>row.num_tornados),
-        type: scatter
+        type: "scatter"
     }
 
     let traces = [trace];
@@ -142,5 +142,7 @@ function makeLine(data) {
         margin: { l: 200 }
     }
 
-    Plotly.newPlot("line", traces, )
+    Plotly.newPlot("line", traces, layout)
 }
+// INITIALIZE plot on page load
+doWork();

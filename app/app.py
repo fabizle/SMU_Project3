@@ -17,14 +17,14 @@ def home_page():
 def about_us():
     return render_template("about_us.html")
 
-@app.route("/api/v1.0/<state>")
-def get_data(state):
-    print(state)
+@app.route("/api/v1.0/<st>")
+def get_data(st):
+    print(st)
 
     # execute the queries
-    data_map = sqlHelper.getMapData(state)
-    data_bar = sqlHelper.getBarData(state)
-    data_line = sqlHelper.getLineData(state)
+    data_map = sqlHelper.getMapData(st)
+    data_bar = sqlHelper.getBarData(st)
+    data_line = sqlHelper.getLineData(st)
 
     data = {"map_data": data_map,
             "bar_data": data_bar,
