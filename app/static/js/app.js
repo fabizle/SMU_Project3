@@ -106,10 +106,10 @@ function makeBar(data) {
 
   // Trace for the Data
   let trace = {
-    x: data.bar_data.map(row => row.st).reverse(),
-    y: data.bar_data.map(row => row.num_tornados).reverse(),
+    x: data.bar_data.map(row => row.state),
+    y: data.bar_data.map(row => row.num_tornados),
     type: "bar",
-    orientation: "h"
+    orientation: "v"
   }
 
   // Data array
@@ -130,15 +130,15 @@ doWork();
 
 function makeLine(data) {
     let trace = {
-        x: data.line_data.map(row => row.st),
-        y: data.line_data.map(row=>row.num_tornados),
+        x: data.line_data.map(row => row.mo).reverse(),
+        y: data.line_data.map(row=>row.mag).reverse(),
         type: "scatter"
     }
 
     let traces = [trace];
 
     let layout = {
-        title: `Tornado Magnitudes by State`,
+        title: `Tornado Magnitudes by Month`,
         margin: { l: 200 }
     }
 

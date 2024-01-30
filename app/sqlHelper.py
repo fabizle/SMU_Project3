@@ -66,23 +66,23 @@ class SQLHelper():
 
         query = f"""
             SELECT
-                st as state,
-                mag as magnitude,
                 mo as month,
-                count(*) as num_tornados
+                st as state,
+                AVG(mag) as magnitude
             FROM
                 tornados
             WHERE
                 {where_clause}
             GROUP BY
                 st,
-                magnitude
+                mo
             ORDER BY
-                st asc;
+                st asc,
+                mo asc;
         """
 
         df_line = pd.read_sql(text(query), con=self.engine)
         data_line = df_line.to_dict(orient="records")
 
-        # return(data_line)
-        print(data_line)
+        return(data_line)
+        # print(data_line)
