@@ -17,18 +17,20 @@ def home_page():
 def about_us():
     return render_template("about_us.html")
 
-@app.route("/api/v1.0/<st>")
-def get_data(st):
-    print(st)
+@app.route("/api/v1.0/<region>")
+def get_data(region):
+    print(region)
 
     # execute the queries
-    data_map = sqlHelper.getMapData(st)
-    data_bar = sqlHelper.getBarData(st)
-    data_line = sqlHelper.getLineData(st)
+    data_map = sqlHelper.getMapData(region)
+    data_bar = sqlHelper.getBarData(region)
+    data_sunburst = sqlHelper.getSunburstData(region)
+    data_box = sqlHelper.getBoxData(region)
 
     data = {"map_data": data_map,
             "bar_data": data_bar,
-            "line_data": data_line}
+            "sunburst_data": data_sunburst,
+            "box_data": data_box}
 
     return jsonify(data)
 

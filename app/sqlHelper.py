@@ -7,12 +7,12 @@ class SQLHelper():
     def __init__(self):
         self.engine = create_engine("sqlite:///Resources/tornados.sqlite")
 
-    def getMapData(self, st):
-        # allow the user to select ALL or a specific state
-        if st == "All":
+    def getMapData(self, region):
+        # allow the user to select ALL or a specific region
+        if region == "All":
             where_clause = "1=1"
         else:
-            where_clause = f"st = '{st}'"
+            where_clause = f"region = '{region}'"
 
         # USE RAW SQL
         query = f"""
@@ -30,18 +30,17 @@ class SQLHelper():
         return(data_map)
         # print(data_map)
 
-    def getBarData(self, st):
-        # allow the user to select ALL or a specific state
-        if st == "All":
+    def getBarData(self, region):
+        # allow the user to select ALL or a specific region
+        if region == "All":
             where_clause = "1=1"
         else:
-            where_clause = f"st = '{st}'"
+            where_clause = f"region = '{region}'"
 
         query = f"""
             SELECT
                 st as state,
-                count(*) as num_tornados,
-                mo
+                count(*) as num_tornados
             FROM
                 tornados
             WHERE
@@ -57,32 +56,65 @@ class SQLHelper():
 
         return(data_bar)
 
-    def getLineData(self, st):
-        # allow the user to select ALL or a specific state
-        if st == "All":
+    def getBoxData(self, region):
+        # allow the user to select ALL or a specific region
+        if region == "All":
             where_clause = "1=1"
         else:
-            where_clause = f"st = '{st}'"
+            where_clause = f"region = '{region}'"
 
         query = f"""
             SELECT
-                mo as month,
-                st as state,
-                AVG(mag) as magnitude
+                month,
+                region,
+                mag as magnitude
+            FROM
+                tornados
+            WHERE
+                {where_clause};
+        """
+
+        df_box = pd.read_sql(text(query), con=self.engine)
+        data_box = df_box.to_dict(orient="records")
+
+        return(data_box)
+        # print(data_line)
+
+    def getSunburstData(self, region):
+        # allow the user to select ALL or a specific region
+        if region == "All":
+            where_clause = "1=1"
+        else:
+            where_clause = f"region = '{region}'"
+
+        query = f"""
+            SELECT
+                region as label,
+                "" as parent,
+                count(*) as num_tornados
+            FROM
+                tornados
+            WHERE
+                {where_clause}
+            GROUP BY
+                region
+            
+            UNION ALL 
+
+            SELECT
+                st as label,
+                region as parent,
+                count(*) as num_tornados
             FROM
                 tornados
             WHERE
                 {where_clause}
             GROUP BY
                 st,
-                mo
-            ORDER BY
-                st asc,
-                mo asc;
+                region;
         """
 
-        df_line = pd.read_sql(text(query), con=self.engine)
-        data_line = df_line.to_dict(orient="records")
+        df_sunburst = pd.read_sql(text(query), con=self.engine)
+        data_sunburst = df_sunburst.to_dict(orient="records")
 
-        return(data_line)
-        # print(data_line)
+        return(data_sunburst)

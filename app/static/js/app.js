@@ -1,8 +1,8 @@
-// select the dropdown
-let dropdown = d3.select("#dropdown");
+// select the region
+let region = d3.select("#region");
 
 // add an event listener for a CHANGE
-dropdown.on("change", function () {
+region.on("change", function () {
   //  console.log("Event Listener heard!! YAY!");
 
   // on change, do work
@@ -11,10 +11,10 @@ dropdown.on("change", function () {
 
 // get the new data
 function doWork() {
-  let inp_state = dropdown.property("value");
+  let inp_region = region.property("value");
 
   // grab the data
-  let url = `/api/v1.0/${inp_state}`;
+  let url = `/api/v1.0/${inp_region}`;
 
   // make request
   d3.json(url).then(function (data) {
@@ -22,7 +22,8 @@ function doWork() {
 
     makeMap(data);
     makeBar(data);
-    makeLine(data);
+    makeSunburst(data);
+    makeBox(data);
   });
 }
 
@@ -109,7 +110,8 @@ function makeBar(data) {
     x: data.bar_data.map(row => row.state),
     y: data.bar_data.map(row => row.num_tornados),
     type: "bar",
-    orientation: "v"
+    orientation: "v",
+    // marker: {color: ['blue', 'orange', 'green', 'red', 'purple', 'brown', 'pink', 'grey', 'lemon', 'lightblue']}
   }
 
   // Data array
@@ -118,31 +120,64 @@ function makeBar(data) {
   // Apply a title to the layout
   let layout = {
     title: `Number of Tornados by State`,
-    margin: { l: 200 }}
+    margin: { l: 50 },
+    yaxis: {
+      title: 'Number of tornadoes'}}
 
   // Render the plot to the div tag with id "plot"
   Plotly.newPlot("bar", traces, layout);
 
 }
 
-// INITIALIZE plot on page load
-doWork();
 
-function makeLine(data) {
+function makeBox(data) {
+  let traces = [];
+  let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
+  'August', 'September', 'October', 'November', 'December'];
+
+  for (let i = 0; i < months.length; i++){
+
+    let month = months[i];
+
     let trace = {
-        x: data.line_data.map(row => row.mo).reverse(),
-        y: data.line_data.map(row=>row.mag).reverse(),
-        type: "scatter"
-    }
+        y: data.box_data.filter(row=>row.month===month).map(row=>row.magnitude),
+        type: "box",
+        name: month,
+          }
 
-    let traces = [trace];
+    traces.push(trace);
+
+  }
+
 
     let layout = {
         title: `Tornado Magnitudes by Month`,
         margin: { l: 200 }
     }
 
-    Plotly.newPlot("line", traces, layout)
+    Plotly.newPlot("box", traces, layout)
+}
+
+
+function makeSunburst(data) {
+  let trace = {
+    "type": "sunburst",
+    "labels": data.sunburst_data.map(row => row.label),
+    "parents": data.sunburst_data.map(row => row.parent),
+    "values":  data.sunburst_data.map(row => row.num_tornados),
+    "leaf": {"opacity": 0.4},
+    "marker": {"line": {"width": 2}},
+    "branchvalues": 'total'
+  }
+
+  let traces = [trace];
+
+  let layout = {
+    "margin": {"l": 0, "r": 0, "b": 0},
+    title: `Tornados by State and Region`
+  }
+
+  Plotly.newPlot("sunburst", traces, layout)
 }
 // INITIALIZE plot on page load
 doWork();
