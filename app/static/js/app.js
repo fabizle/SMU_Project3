@@ -121,6 +121,7 @@ function makeBar(data) {
   let layout = {
     title: `Number of Tornados by State`,
     margin: { l: 50 },
+    colorway: ["#7DBA91", "#277A8C", "#3F908E", "#1B6488", "#5AA590", "#244B7F"],
     yaxis: {
       title: 'Number of tornadoes'}}
 
@@ -152,7 +153,10 @@ function makeBox(data) {
 
     let layout = {
         title: `Tornado Magnitudes by Month`,
-        margin: { l: 200 }
+        margin: { l: 200 },
+        colorway: ["#7DBA91", "#277A8C", "#3F908E", "#1B6488", "#5AA590", "#244B7F"],
+        yaxis: {
+          title: 'Magnitude of tornadoes'}
     }
 
     Plotly.newPlot("box", traces, layout)
@@ -174,7 +178,8 @@ function makeSunburst(data) {
 
   let layout = {
     "margin": {"l": 0, "r": 0, "b": 0},
-    title: `Tornados by State and Region`
+    title: `Tornados by State and Region`,
+    colorway: ["#7DBA91", "#277A8C", "#3F908E", "#1B6488", "#5AA590", "#244B7F"]
   }
 
   Plotly.newPlot("sunburst", traces, layout)
