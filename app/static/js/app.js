@@ -111,7 +111,9 @@ function makeBar(data) {
     y: data.bar_data.map(row => row.num_tornados),
     type: "bar",
     orientation: "v",
-    // marker: {color: ['blue', 'orange', 'green', 'red', 'purple', 'brown', 'pink', 'grey', 'lemon', 'lightblue']}
+    marker: {
+      color: "#7DBA91"
+    }
   }
 
   // Data array
@@ -121,7 +123,7 @@ function makeBar(data) {
   let layout = {
     title: `Number of Tornados by State`,
     margin: { l: 50 },
-    colorway: ["#7DBA91", "#277A8C", "#3F908E", "#1B6488", "#5AA590", "#244B7F"],
+    // colorway: ["#7DBA91", "#277A8C", "#3F908E", "#1B6488", "#5AA590", "#244B7F"],
     yaxis: {
       title: 'Number of tornadoes'}}
 

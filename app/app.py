@@ -17,6 +17,10 @@ def home_page():
 def about_us():
     return render_template("about_us.html")
 
+@app.route("/dashboard")
+def dashboard():
+    return render_template("dashboard.html")
+
 @app.route("/api/v1.0/<region>")
 def get_data(region):
     print(region)
