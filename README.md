@@ -5,7 +5,7 @@ Project Overview
 Our team has diligently collaborated to delve into the Tornados 1950-2022 dataset from Kaggle.com. We chose this dataset because it has a wide breadth of data and our curiosity about categorizing tornados. We aimed to uncover US tornado patterns through exploratory data engineering, data analysis, and data visualization.
 
 Instructions on how to interact with the project
-Visit htmllink for project
+Visit https://allyb3.pythonanywhere.com for project
 
 Our landing page consists of one dropdown by region.  The dashboard page displays a bar chart, box plot chart, sunburst chart, and map. Select filter for the dropdown and the bar, box plot, and sunburst charts, and the map will update.
 
