@@ -66,7 +66,7 @@ function makeMap(data) {
     let location = [latitude, longitude];
 
     // Add a new marker to the cluster group, and bind a popup.
-    let marker = L.marker(location).bindPopup(`<h3>${row.st}</h3>`);
+    let marker = L.marker(location).bindPopup(`<h3>Magnitude: ${row.mag}</h3><br><h3>Date: ${row.month} ${row.dy}, ${row.yr}</h3`);
     markerLayer.addLayer(marker);
 
     // for the heatmap
